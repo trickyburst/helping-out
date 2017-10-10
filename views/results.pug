@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h3    
+   a(href=`https://www.mediawiki.org/wiki/User:` + user.name) #{user.name}    
+  p Edit count: #{user.editcount}
+  p Registration date: #{user.registration}    
+  p Recent Edits
+    each contribution in contributions
+      li 
+        | #{contribution.title}
+        br
+        a(href=`https://en.wikipedia.org/w/index.php?title=User:` + user.name + `diff=prev&oldid=` + contribution.revid) See details #{contribution.revid}  
+
+      
+        

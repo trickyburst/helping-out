@@ -1,0 +1,14 @@
+
+extends layout
+
+block content
+  .wrapper
+    main.signin-section
+       article.page.page-signin
+    
+    form.signinform(action='/results', method='get')
+      label(for='name') Enter a user name:
+      br
+      input(type='text', name='search')
+      br
+      button(type='submit', name='submit') Search
