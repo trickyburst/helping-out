@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const fetch = require('isomorphic-fetch');
+const format = require('date-fns/format');
 
 router.get('/', function(req, res, next) {
 	res.render('index');
@@ -15,18 +17,30 @@ router.get('/results', function(req, res) {
 			return fetch(url);
 		})
 	)
-		.then(function(results) {
-			return Promise.all(results.map(res => res.json()));
-		})
-		.then(function(results) {
-			let a = results[0].query.users[0];
-			let b = results[1].query.usercontribs;
-			console.log(JSON.stringify({ user: a, contributions: b }));
-			res.render('results', { user: a, contributions: b });
-		})
-		.catch(function(err) {
-			console.log(err);
-		});
+	.then(function(results) {
+		return Promise.all(results.map(res => res.json()));
+	})
+	.then(function(results) {
+		const user = results[0].query.users[0];
+		const contributions = results[1].query.usercontribs;
+
+		if (user && user.missing === '') {
+			return res.render('error', {
+				message: 'User not found',
+				error: {},
+			});
+		}
+
+		user.registrationFormatted = '';
+		if (user.registration) {
+			user.registrationFormatted = format(user.registration, 'DD/MM/YY HH:mm');
+		}
+
+		res.render('results', {user, contributions});
+	})
+	.catch(function(err) {
+		res.render('error', { message: err.message, error: {} });
+	});
 });
 
 module.exports = router;

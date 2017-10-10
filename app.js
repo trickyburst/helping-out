@@ -1,10 +1,6 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon'); // do I need this?
-//const logger = require('morgan'); // do I need logger?
 const bodyParser = require('body-parser'); // do I need bodyParser?
-const promise = require('es6-promise').polyfill();
-const fetch = require('isomorphic-fetch');
 
 const index = require('./routes/index');
 
