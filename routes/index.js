@@ -9,6 +9,10 @@ router.get('/', function(req, res, next) {
 
 router.get('/results', function(req, res) {
 	const username = req.query.search;
+	if (!username) {
+		return res.render('error', { message: 'Please enter a user', error: {} });
+	}
+	
 	const url1 = `https://en.wikipedia.org/w/api.php?action=query&list=users&usprop=editcount|groups|registration&ususers=${username}&format=json`;
 	const url2 = `https://en.wikipedia.org/w/api.php?action=query&list=usercontribs&uclimit=3&ucprop=ids|title|timestamp|size&ucuser=${username}&format=json`;
 
